@@ -34,6 +34,7 @@ VLAN	Name	Network	Purpose
 20	MANAGEMENT	192.168.20.0/24	Switch management
 
 WHAT I LEARNED 
+
 VLAN segmentation
 
 802.1Q trunking
