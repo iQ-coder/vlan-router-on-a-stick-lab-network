@@ -1,0 +1,131 @@
+enable
+conf t
+hostname SW0
+
+! VLANs
+vlan 10
+ name USERS
+vlan 20
+ name MANAGEMENT
+
+! Access Ports
+interface fa0/2
+ switchport mode access
+ switchport access vlan 1
+
+interface fa0/3
+ switchport mode access
+ switchport access vlan 10
+
+interface fa0/4
+ switchport mode access
+ switchport access vlan 20
+
+! Trunk to Switch 1
+interface fa0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 1,10,20
+ switchport trunk native vlan 1
+
+! Management SVI
+interface vlan 20
+ ip address 192.168.20.2 255.255.255.0
+ no shutdown
+
+ip default-gateway 192.168.20.1
+
+! Telnet Config
+line vty 0 4
+ password cisco
+ login
+ transport input telnet
+
+end
+wr
+   
+SWITCH 1 CONFIG
+
+enable
+conf t
+hostname SW1
+
+! VLANs
+vlan 10
+ name USERS
+vlan 20
+ name MANAGEMENT
+
+! Access Ports
+interface fa0/2
+ switchport mode access
+ switchport access vlan 1
+
+interface fa0/3
+ switchport mode access
+ switchport access vlan 10
+
+! Trunk to Switch 0
+interface fa0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 1,10,20
+ switchport trunk native vlan 1
+
+! Trunk to Router
+interface fa0/4
+ switchport mode trunk
+ switchport trunk allowed vlan 1,10,20
+ switchport trunk native vlan 1
+
+end
+wr
+
+ROUTER CONFIG (Router-on-a-Stick)
+
+
+enable
+conf t
+hostname R1
+
+interface g0/0
+ no shutdown
+
+! Native VLAN 1
+interface g0/0.1
+ encapsulation dot1Q 1 native
+ ip address 192.168.1.1 255.255.255.0
+
+! VLAN 10
+interface g0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+
+! VLAN 20 (Management)
+interface g0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+
+end
+wr
+
+🔹 PC Addressing
+VLAN 1 PC
+
+IP: 192.168.1.101
+Mask: 255.255.255.0
+Gateway: 192.168.1.1
+
+VLAN 10 PC
+
+IP: 192.168.10.102
+Mask: 255.255.255.0
+Gateway: 192.168.10.1
+
+VLAN 20 PC
+
+IP: 192.168.20.103
+Mask: 255.255.255.0
+Gateway: 192.168.20.1
+
+
+
+
