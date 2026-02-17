@@ -30,7 +30,9 @@ Trunk link between Switch and Router
 🌐 VLAN Design
 VLAN	Name	Network	Purpose
 1	Native	192.168.1.0/24	Default LAN
+
 10	USERS	192.168.10.0/24	User devices
+
 20	MANAGEMENT	192.168.20.0/24	Switch management
 
 WHAT I LEARNED 
